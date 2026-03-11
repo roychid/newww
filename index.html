@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>t3n28 Dissertation AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   t3n28 Dissertation AI — Design System
+   Stark black/white. Editorial. Precise.
+═══════════════════════════════════════════════════════════════════ */
+:root {
+  --bg:        #000000;
+  --bg2:       #111111;
+  --bg3:       #0F0F0F;
+  --border:    #333333;
+  --border2:   #222222;
+  --text:      #FFFFFF;
+  --muted:     #666666;
+  --muted2:    #444444;
+  --accent:    #FFFFFF;
+  --sidebar-w: 220px;
+  --header-h:  56px;
+  --sans:      'DM Sans', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --r:         6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+
+body {
+background: var(--bg);
+color: var(--text);
+font-family: var(--sans);
+font-size: 15px;
+height: 100%;
+overflow: hidden;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── Header ─────────────────────────────────────────────────────── */
+#header {
+position: fixed;
+top: 0; left: 0; right: 0;
+height: var(--header-h);
+background: var(--bg);
+border-bottom: 1px solid var(--border2);
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 24px;
+z-index: 100;
+}
+
+.header-left {
+display: flex;
+align-items: center;
+gap: 32px;
+}
+
+.logo {
+font-family: var(--mono);
+font-weight: 600;
+font-size: 15px;
+letter-spacing: -0.02em;
+color: var(--text);
+text-decoration: none;
+white-space: nowrap;
+}
+.logo span { color: var(--muted); }
+
+.nav {
+display: flex;
+align-items: center;
+gap: 4px;
+}
+.nav a {
+font-size: 13px;
+color: var(--muted);
+text-decoration: none;
+padding: 5px 10px;
+border-radius: var(--r);
+transition: color 0.15s, background 0.15s;
+}
+.nav a:hover { color: var(--text); background: var(--bg2); }
+.nav a.active { color: var(--text); }
+
+.header-right {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.avatar {
+width: 30px; height: 30px;
+border-radius: 50%;
+background: var(--bg2);
+border: 1px solid var(--border);
+display: flex; align-items: center; justify-content: center;
+font-size: 12px;
+color: var(--muted);
+cursor: pointer;
+font-family: var(--mono);
+}
+
+/* ── App Shell ───────────────────────────────────────────────────── */
+#app {
+display: flex;
+height: 100vh;
+padding-top: var(--header-h);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+#sidebar {
+width: var(--sidebar-w);
+min-width: var(--sidebar-w);
+background: var(--bg);
+border-right: 1px solid var(--border2);
+padding: 20px 0;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.sidebar-section {
+padding: 0 12px;
+margin-bottom: 4px;
+}
+
+.sidebar-label {
+font-family: var(--mono);
+font-size: 10px;
+font-weight: 500;
+letter-spacing: 0.12em;
+color: var(--muted2);
+text-transform: uppercase;
+padding: 8px 8px 4px;
+}
+
+.sidebar-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 8px 10px;
+border-radius: var(--r);
+cursor: pointer;
+font-size: 13.5px;
+color: var(--muted);
+transition: all 0.15s;
+border: 1px solid transparent;
+user-select: none;
+}
+.sidebar-item:hover { color: var(--text); background: var(--bg2); }
+.sidebar-item.active {
+color: var(--text);
+background: var(--bg2);
+border-color: var(--border2);
+}
+.sidebar-item .icon {
+font-size: 14px;
+width: 18px;
+text-align: center;
+flex-shrink: 0;
+}
+.sidebar-item .badge {
+margin-left: auto;
+font-family: var(--mono);
+font-size: 10px;
+background: var(--border);
+color: var(--muted);
+padding: 1px 5px;
+border-radius: 3px;
+}
+
+.sidebar-divider {
+height: 1px;
+background: var(--border2);
+margin: 8px 12px;
+}
+
+/* ── Main ────────────────────────────────────────────────────────── */
+#main {
+flex: 1;
+overflow-y: auto;
+padding: 32px 40px;
+display: flex;
+flex-direction: column;
+gap: 24px;
+}
+
+/* ── Pages ───────────────────────────────────────────────────────── */
+.page { display: none; flex-direction: column; gap: 24px; animation: fadeUp 0.2s ease; }
+.page.active { display: flex; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(6px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page Header ─────────────────────────────────────────────────── */
+.page-header { display: flex; flex-direction: column; gap: 6px; }
+.page-title {
+font-size: 22px;
+font-weight: 600;
+letter-spacing: -0.03em;
+color: var(--text);
+}
+.page-sub {
+font-size: 13px;
+color: var(--muted);
+line-height: 1.6;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+background: var(--bg2);
+border: 1px solid var(--border2);
+border-radius: var(--r);
+padding: 24px;
+}
+
+.card-title {
+font-family: var(--mono);
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted);
+margin-bottom: 16px;
+}
+
+/* ── Form Elements ───────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+
+label {
+font-size: 12px;
+font-weight: 500;
+color: var(--muted);
+letter-spacing: 0.04em;
+text-transform: uppercase;
+font-family: var(--mono);
+}
+
+input[type="text"], select, textarea {
+background: var(--bg3);
+border: 1px solid var(--border2);
+border-radius: var(--r);
+color: var(--text);
+font-family: var(--sans);
+font-size: 14px;
+padding: 10px 14px;
+outline: none;
+width: 100%;
+transition: border-color 0.15s;
+-webkit-appearance: none;
+appearance: none;
+}
+input[type="text"]::placeholder,
+textarea::placeholder { color: var(--muted2); }
+input[type="text"]:focus,
+select:focus,
+textarea:focus { border-color: var(--border); }
+
+select {
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 12px center;
+padding-right: 32px;
+cursor: pointer;
+}
+option, optgroup { background: #111; color: #fff; }
+
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field-row .field { margin-bottom: 0; }
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+font-family: var(--sans);
+font-size: 13.5px;
+font-weight: 500;
+padding: 9px 18px;
+border-radius: var(--r);
+cursor: pointer;
+transition: all 0.15s;
+border: 1px solid transparent;
+white-space: nowrap;
+}
+
+.btn-primary {
+background: var(--text);
+color: var(--bg);
+border-color: var(--text);
+}
+.btn-primary:hover { background: #e8e8e8; }
+.btn-primary:active { background: #d0d0d0; }
+
+.btn-ghost {
+background: transparent;
+color: var(--muted);
+border-color: var(--border2);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border); }
+
+.btn-icon {
+padding: 7px 10px;
+font-size: 14px;
+}
+
+.btn-row {
+display: flex;
+align-items: center;
+gap: 8px;
+flex-wrap: wrap;
+margin-top: 4px;
+}
+
+/* ── Output Box ──────────────────────────────────────────────────── */
+.output-box {
+display: none;
+flex-direction: column;
+gap: 0;
+border: 1px solid var(--border2);
+border-radius: var(--r);
+overflow: hidden;
+animation: fadeUp 0.25s ease;
+}
+.output-box.visible { display: flex; }
+
+.output-topbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 16px;
+background: #0a0a0a;
+border-bottom: 1px solid var(--border2);
+}
+
+.output-label {
+display: flex;
+align-items: center;
+gap: 8px;
+font-family: var(--mono);
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted);
+}
+.output-dot {
+width: 7px; height: 7px;
+border-radius: 50%;
+background: #fff;
+opacity: 0.6;
+animation: pulse 2.5s infinite;
+}
+@keyframes pulse {
+0%,100% { opacity: 0.6; }
+50%      { opacity: 0.15; }
+}
+
+.output-actions { display: flex; gap: 6px; }
+
+.output-content {
+padding: 22px 24px;
+font-size: 14px;
+line-height: 1.85;
+color: #e0e0e0;
+white-space: pre-wrap;
+word-break: break-word;
+background: var(--bg3);
+min-height: 80px;
+max-height: 520px;
+overflow-y: auto;
+}
+
+/* ── Dashboard ───────────────────────────────────────────────────── */
+.welcome-block {
+padding: 28px 0 4px;
+}
+.welcome-block h2 {
+font-size: 26px;
+font-weight: 600;
+letter-spacing: -0.04em;
+margin-bottom: 6px;
+}
+.welcome-block p { font-size: 14px; color: var(--muted); }
+
+.quick-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+}
+
+.quick-card {
+background: var(--bg2);
+border: 1px solid var(--border2);
+border-radius: var(--r);
+padding: 20px;
+cursor: pointer;
+transition: border-color 0.15s, transform 0.15s;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.quick-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.quick-card .qc-icon { font-size: 22px; }
+.quick-card .qc-title { font-size: 14px; font-weight: 500; color: var(--text); }
+.quick-card .qc-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.projects-list { display: flex; flex-direction: column; gap: 2px; }
+.project-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 12px 16px;
+border-radius: var(--r);
+cursor: pointer;
+transition: background 0.15s;
+}
+.project-row:hover { background: var(--bg3); }
+.project-row .pr-name { font-size: 14px; color: var(--text); }
+.project-row .pr-meta { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+
+/* ── Topics ─────────────────────────────────────────────────────── */
+.topics-list {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-top: 4px;
+}
+.topic-item {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+padding: 14px 16px;
+background: var(--bg3);
+border: 1px solid var(--border2);
+border-radius: var(--r);
+cursor: pointer;
+transition: border-color 0.15s;
+}
+.topic-item:hover { border-color: var(--border); }
+.topic-num {
+font-family: var(--mono);
+font-size: 11px;
+color: var(--muted2);
+min-width: 18px;
+padding-top: 1px;
+}
+.topic-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+/* ── Methodology ─────────────────────────────────────────────────── */
+.method-chips {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 0;
+}
+.chip {
+padding: 6px 14px;
+border-radius: 100px;
+border: 1px solid var(--border2);
+font-size: 13px;
+color: var(--muted);
+cursor: pointer;
+transition: all 0.15s;
+background: transparent;
+font-family: var(--sans);
+}
+.chip:hover { color: var(--text); border-color: var(--border); }
+.chip.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* ── Editor ──────────────────────────────────────────────────────── */
+.edit-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0; }
+
+/* ── Export ──────────────────────────────────────────────────────── */
+.export-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.export-card {
+background: var(--bg3);
+border: 1px solid var(--border2);
+border-radius: var(--r);
+padding: 20px;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.15s, transform 0.15s;
+}
+.export-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.export-card .ec-icon { font-size: 28px; margin-bottom: 10px; }
+.export-card .ec-label { font-size: 14px; font-weight: 500; color: var(--text); }
+.export-card .ec-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ── Loading overlay ─────────────────────────────────────────────── */
+#loading {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.88);
+backdrop-filter: blur(6px);
+display: flex; align-items: center; justify-content: center;
+z-index: 999;
+flex-direction: column;
+gap: 14px;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.2s;
+}
+#loading.show { opacity: 1; pointer-events: all; }
+.loader-ring {
+width: 34px; height: 34px;
+border: 1.5px solid var(--border);
+border-top-color: var(--text);
+border-radius: 50%;
+animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading p {
+font-family: var(--mono);
+font-size: 12px;
+color: var(--muted);
+letter-spacing: 0.06em;
+}
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+#toast {
+position: fixed; bottom: 24px; left: 50%;
+transform: translateX(-50%) translateY(8px);
+background: var(--text); color: var(--bg);
+font-size: 13px; font-weight: 500;
+padding: 9px 20px; border-radius: 100px;
+opacity: 0; transition: all 0.2s; pointer-events: none;
+white-space: nowrap; z-index: 1000;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+#sidebar { display: none; }
+#main { padding: 20px 16px; }
+.quick-grid { grid-template-columns: 1fr; }
+.field-row { grid-template-columns: 1fr; }
+.export-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────── -->
+
+<header id="header">
+  <div class="header-left">
+    <a class="logo" href="#">t3n28<span>.studio</span></a>
+    <nav class="nav">
+      <a href="#" class="active" onclick="showPage('dashboard');return false;">Dashboard</a>
+      <a href="#" onclick="showPage('topics');return false;">Tools</a>
+      <a href="#">Projects</a>
+      <a href="#">About</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <div class="avatar" title="t3n28">t3</div>
+  </div>
+</header>
+
+<!-- ── App Shell ──────────────────────────────────────────────────── -->
+
+<div id="app">
+
+  <!-- Sidebar -->
+
+  <nav id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workspace</div>
+      <div class="sidebar-item active" data-page="dashboard" onclick="showPage('dashboard')">
+        <span class="icon">⊞</span> Dashboard
+      </div>
+    </div>
+
+<div class="sidebar-divider"></div>
+
+<div class="sidebar-section">
+  <div class="sidebar-label">Dissertation Tools</div>
+  <div class="sidebar-item" data-page="topics" onclick="showPage('topics')">
+    <span class="icon">◈</span> Topic Generator
+  </div>
+  <div class="sidebar-item" data-page="questions" onclick="showPage('questions')">
+    <span class="icon">?</span> Research Questions
+  </div>
+  <div class="sidebar-item" data-page="outline" onclick="showPage('outline')">
+    <span class="icon">≡</span> Outline Builder
+  </div>
+  <div class="sidebar-item" data-page="writer" onclick="showPage('writer')">
+    <span class="icon">✎</span> Section Writer
+  </div>
+  <div class="sidebar-item" data-page="methodology" onclick="showPage('methodology')">
+    <span class="icon">⊙</span> Methodology Builder
+  </div>
+  <div class="sidebar-item" data-page="editor" onclick="showPage('editor')">
+    <span class="icon">✦</span> Academic Editor
+  </div>
+</div>
+
+<div class="sidebar-divider"></div>
+
+<div class="sidebar-section">
+  <div class="sidebar-label">Output</div>
+  <div class="sidebar-item" data-page="export" onclick="showPage('export')">
+    <span class="icon">↓</span> Export
+    <span class="badge">TXT</span>
+  </div>
+</div>
+
+  </nav>
+
+  <!-- Main Content -->
+
+  <main id="main">
+
+<!-- ── DASHBOARD ─────────────────────────────────────────────── -->
+<div class="page active" id="page-dashboard">
+  <div class="welcome-block">
+    <h2 id="dashboard-greeting">Welcome. 🌍</h2>
+    <p>Your dissertation workspace. Pick a tool to get started.</p>
+  </div>
+
+  <div>
+    <div class="card-title">Quick Actions</div>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="showPage('topics')">
+        <div class="qc-icon">◈</div>
+        <div class="qc-title">Generate Topic</div>
+        <div class="qc-desc">Discover a research topic tailored to your field.</div>
+      </div>
+      <div class="quick-card" onclick="showPage('writer')">
+        <div class="qc-icon">✎</div>
+        <div class="qc-title">Write Introduction</div>
+        <div class="qc-desc">Generate your background of study or problem statement.</div>
+      </div>
+      <div class="quick-card" onclick="showPage('outline')">
+        <div class="qc-icon">≡</div>
+        <div class="qc-title">Build Outline</div>
+        <div class="qc-desc">Get a full chapter-by-chapter dissertation structure.</div>
+      </div>
+      <div class="quick-card" onclick="showPage('questions')">
+        <div class="qc-icon">?</div>
+        <div class="qc-title">Research Questions</div>
+        <div class="qc-desc">Generate your main and supporting research questions.</div>
+      </div>
+      <div class="quick-card" onclick="showPage('methodology')">
+        <div class="qc-icon">⊙</div>
+        <div class="qc-title">Methodology Builder</div>
+        <div class="qc-desc">Define your research design and data collection plan.</div>
+      </div>
+      <div class="quick-card" onclick="showPage('editor')">
+        <div class="qc-icon">✦</div>
+        <div class="qc-title">Academic Editor</div>
+        <div class="qc-desc">Improve, expand, or simplify your own writing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">This Session</div>
+    <div id="dashboard-activity" style="font-size:13px; color:var(--muted); line-height:2;">
+      Nothing generated yet. Use a tool above to get started.
+    </div>
+  </div>
+</div>
+
+<!-- ── TOPIC GENERATOR ────────────────────────────────────────── -->
+<div class="page" id="page-topics">
+  <div class="page-header">
+    <div class="page-title">Topic Generator</div>
+    <div class="page-sub">Enter your field and region to discover dissertation topics relevant to African contexts.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Details</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Field of Study</label>
+        <select id="t-field">
+          <option>Business Management</option>
+          <option>Economics</option>
+          <option>Computer Science</option>
+          <option>Engineering</option>
+          <option>Education</option>
+          <option>Public Health</option>
+          <option>Agriculture</option>
+          <option>Law</option>
+          <option>Social Sciences</option>
+          <option>Environmental Studies</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Research Region</label>
+        <select id="t-region">
+          <option>Zimbabwe</option>
+          <option>Southern Africa</option>
+          <option>Africa</option>
+          <option>East Africa</option>
+          <option>West Africa</option>
+          <option>Global</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Keywords / Interests (optional)</label>
+      <input type="text" id="t-keywords" placeholder="e.g. mobile money, fintech, rural communities"/>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generateTopics()">Generate Topics →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="topics-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> Suggested Topics</div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="generateTopics()" title="Regenerate">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('topics-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="topics-content"></div>
+  </div>
+</div>
+
+<!-- ── RESEARCH QUESTIONS ─────────────────────────────────────── -->
+<div class="page" id="page-questions">
+  <div class="page-header">
+    <div class="page-title">Research Questions</div>
+    <div class="page-sub">Generate a main research question and 4 supporting sub-questions from your topic.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Dissertation Topic</div>
+    <div class="field">
+      <label>Your Topic</label>
+      <input type="text" id="q-topic" placeholder="e.g. Impact of mobile money on small businesses in Zimbabwe"/>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generateQuestions()">Generate Questions →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="questions-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> Research Questions</div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="generateQuestions()" title="Regenerate">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('questions-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="questions-content"></div>
+  </div>
+</div>
+
+<!-- ── OUTLINE BUILDER ────────────────────────────────────────── -->
+<div class="page" id="page-outline">
+  <div class="page-header">
+    <div class="page-title">Outline Builder</div>
+    <div class="page-sub">Generate a complete 5-chapter dissertation structure with section descriptions and word counts.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Dissertation Details</div>
+    <div class="field">
+      <label>Dissertation Topic</label>
+      <input type="text" id="o-topic" placeholder="e.g. Challenges of water infrastructure management in urban Zimbabwe"/>
+    </div>
+    <div class="field">
+      <label>Degree Level</label>
+      <select id="o-degree">
+        <option>Undergraduate</option>
+        <option>Masters</option>
+        <option>PhD</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generateOutline()">Build Outline →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="outline-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> Dissertation Outline</div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="generateOutline()" title="Regenerate">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('outline-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="outline-content"></div>
+  </div>
+</div>
+
+<!-- ── SECTION WRITER ─────────────────────────────────────────── -->
+<div class="page" id="page-writer">
+  <div class="page-header">
+    <div class="page-title">Section Writer</div>
+    <div class="page-sub">Generate any dissertation section. Add optional instructions to guide the writing style.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Writing Parameters</div>
+    <div class="field">
+      <label>Dissertation Topic</label>
+      <input type="text" id="w-topic" placeholder="e.g. Digital learning adoption in African universities"/>
+    </div>
+    <div class="field">
+      <label>Section to Write</label>
+      <select id="w-section">
+        <optgroup label="Chapter 1 — Introduction">
+          <option value="Background of the Study">Background of the Study</option>
+          <option value="Problem Statement">Problem Statement</option>
+          <option value="Research Objectives">Research Objectives</option>
+          <option value="Research Questions">Research Questions</option>
+          <option value="Significance of the Study">Significance of the Study</option>
+          <option value="Scope and Limitations">Scope and Limitations</option>
+        </optgroup>
+        <optgroup label="Chapter 2 — Literature Review">
+          <option value="Literature Review Introduction">Literature Review Introduction</option>
+          <option value="Theoretical Framework">Theoretical Framework</option>
+          <option value="Conceptual Framework">Conceptual Framework</option>
+          <option value="Empirical Literature Review">Empirical Literature Review</option>
+          <option value="Research Gap">Research Gap</option>
+        </optgroup>
+        <optgroup label="Chapter 3 — Methodology">
+          <option value="Research Methodology Overview">Research Methodology Overview</option>
+          <option value="Research Design">Research Design</option>
+          <option value="Population and Sampling">Population and Sampling</option>
+          <option value="Data Collection Methods">Data Collection Methods</option>
+          <option value="Data Analysis Methods">Data Analysis Methods</option>
+        </optgroup>
+        <optgroup label="Chapter 4 & 5">
+          <option value="Results and Discussion">Results and Discussion</option>
+          <option value="Conclusion and Recommendations">Conclusion and Recommendations</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label>Additional Instructions (optional)</label>
+      <input type="text" id="w-instructions" placeholder="e.g. focus on rural areas, include recent statistics"/>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generateSection()">Write Section →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="writer-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> <span id="writer-label">Generated Section</span></div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="generateSection()" title="Regenerate">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('writer-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="writer-content"></div>
+  </div>
+</div>
+
+<!-- ── METHODOLOGY BUILDER ────────────────────────────────────── -->
+<div class="page" id="page-methodology">
+  <div class="page-header">
+    <div class="page-title">Methodology Builder</div>
+    <div class="page-sub">Define your research approach and generate a structured Chapter 3 methodology section.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Research Design</div>
+    <div class="field">
+      <label>Dissertation Topic</label>
+      <input type="text" id="m-topic" placeholder="e.g. Youth unemployment and digital skills in Zimbabwe"/>
+    </div>
+
+    <div class="field">
+      <label>Research Type</label>
+      <div class="method-chips" id="res-type-chips">
+        <button class="chip selected" onclick="selectChip(this,'res-type-chips')">Qualitative</button>
+        <button class="chip" onclick="selectChip(this,'res-type-chips')">Quantitative</button>
+        <button class="chip" onclick="selectChip(this,'res-type-chips')">Mixed Methods</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Data Collection Method</label>
+      <div class="method-chips" id="data-col-chips">
+        <button class="chip selected" onclick="selectChip(this,'data-col-chips')">Interviews</button>
+        <button class="chip" onclick="selectChip(this,'data-col-chips')">Surveys</button>
+        <button class="chip" onclick="selectChip(this,'data-col-chips')">Case Study</button>
+        <button class="chip" onclick="selectChip(this,'data-col-chips')">Experiment</button>
+        <button class="chip" onclick="selectChip(this,'data-col-chips')">Document Analysis</button>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-primary" onclick="generateMethodology()">Build Methodology →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="methodology-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> Methodology Section</div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="generateMethodology()" title="Regenerate">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('methodology-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="methodology-content"></div>
+  </div>
+</div>
+
+<!-- ── ACADEMIC EDITOR ────────────────────────────────────────── -->
+<div class="page" id="page-editor">
+  <div class="page-header">
+    <div class="page-title">Academic Editor</div>
+    <div class="page-sub">Paste your own writing and choose how to improve it.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Text</div>
+    <div class="field">
+      <textarea id="e-text" rows="6" placeholder="Paste your text here to improve it academically…"></textarea>
+    </div>
+    <div class="field">
+      <label>Edit Action</label>
+      <div class="edit-chips" id="edit-action-chips">
+        <button class="chip selected" onclick="selectChip(this,'edit-action-chips')">Improve Academic Tone</button>
+        <button class="chip" onclick="selectChip(this,'edit-action-chips')">Shorten Text</button>
+        <button class="chip" onclick="selectChip(this,'edit-action-chips')">Expand Explanation</button>
+        <button class="chip" onclick="selectChip(this,'edit-action-chips')">Simplify Language</button>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-primary" onclick="editText()">Edit Text →</button>
+    </div>
+  </div>
+
+  <div class="output-box" id="editor-output">
+    <div class="output-topbar">
+      <div class="output-label"><span class="output-dot"></span> Edited Version</div>
+      <div class="output-actions">
+        <button class="btn btn-ghost btn-icon" onclick="editText()" title="Re-edit">↺</button>
+        <button class="btn btn-ghost btn-icon" onclick="copyEl('editor-content')" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="output-content" id="editor-content"></div>
+  </div>
+</div>
+
+<!-- ── EXPORT ─────────────────────────────────────────────────── -->
+<div class="page" id="page-export">
+  <div class="page-header">
+    <div class="page-title">Export</div>
+    <div class="page-sub">Download your generated content in your preferred format.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Export Format</div>
+    <div class="export-grid">
+      <div class="export-card" onclick="exportAs('docx')">
+        <div class="ec-icon">📘</div>
+        <div class="ec-label">Word Document</div>
+        <div class="ec-sub">.docx — formatted</div>
+      </div>
+      <div class="export-card" onclick="exportAs('txt')">
+        <div class="ec-icon">📄</div>
+        <div class="ec-label">Plain Text</div>
+        <div class="ec-sub">.txt — universal</div>
+      </div>
+      <div class="export-card" onclick="exportAs('md')">
+        <div class="ec-icon">📝</div>
+        <div class="ec-label">Markdown</div>
+        <div class="ec-sub">.md — formatted</div>
+      </div>
+      <div class="export-card" onclick="exportAs('html')">
+        <div class="ec-icon">🌐</div>
+        <div class="ec-label">HTML Document</div>
+        <div class="ec-sub">.html — styled</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Session Content</div>
+    <div id="export-summary" style="font-size:13px; color:var(--muted); line-height:2;">
+      No content generated yet in this session.<br>
+      Use the tools on the left, then return here to export.
+    </div>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<!-- Loading overlay -->
+
+<div id="loading">
+  <div class="loader-ring"></div>
+  <p id="loading-msg">Generating…</p>
+</div>
+
+<!-- Toast -->
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   t3n28 Dissertation AI — App Logic (Hugging Face Optimized)
+═══════════════════════════════════════════════════════════════════ */
+
+// Session content store for export
+const session = {
+  topics: '', questions: '', outline: '',
+  writer: '', methodology: '', editor: ''
+};
+
+// Track timestamps of what was generated this session
+const sessionActivity = {};
+
+// Track current model being used (optional)
+let currentModel = null;
+
+/* ── Dynamic greeting ────────────────────────────────────────────── */
+(function setGreeting() {
+  const h = new Date().getHours();
+  const greeting = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  const el = document.getElementById('dashboard-greeting');
+  if (el) el.textContent = greeting + '. 🌍';
+})();
+
+/* ── Navigation ──────────────────────────────────────────────────── */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+
+  const item = document.querySelector('.sidebar-item[data-page="' + name + '"]');
+  if (item) item.classList.add('active');
+}
+
+/* ── Loading ─────────────────────────────────────────────────────── */
+function showLoading(msg = 'Generating…') {
+  document.getElementById('loading-msg').textContent = msg;
+  document.getElementById('loading').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
+}
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* ── Copy ────────────────────────────────────────────────────────── */
+function copyEl(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard'));
+}
+
+/* ── Chip selector ───────────────────────────────────────────────── */
+function selectChip(el, groupId) {
+  document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function getSelectedChip(groupId) {
+  const sel = document.querySelector('#' + groupId + ' .chip.selected');
+  return sel ? sel.textContent.trim() : '';
+}
+
+/* ── Streaming response handler ──────────────────────────────────── */
+async function handleStreamingResponse(response, outputBoxId, outputContentId, sessionKey) {
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let fullContent = '';
+  
+  const outputBox = document.getElementById(outputBoxId);
+  const outputContent = document.getElementById(outputContentId);
+  
+  // Clear previous content
+  outputContent.textContent = '';
+  outputBox.classList.add('visible');
+  
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      
+      buffer += decoder.decode(value, { stream: true });
+      
+      // Process complete SSE events
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || ''; // Keep incomplete line
+      
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          
+          try {
+            const parsed = JSON.parse(data);
+            
+            if (parsed.error) {
+              toast('Error: ' + parsed.error);
+              hideLoading();
+              return;
+            }
+            
+            if (parsed.content) {
+              fullContent += parsed.content;
+              outputContent.textContent = fullContent;
+              // Auto-scroll to bottom
+              outputContent.scrollTop = outputContent.scrollHeight;
+            }
+            
+            if (parsed.info && parsed.info.includes('Using model:')) {
+              currentModel = parsed.info.split('Using model: ')[1];
+              console.log('Model:', currentModel);
+            }
+          } catch (e) {
+            console.error('Error parsing JSON:', e);
+          }
+        }
+      }
+    }
+    
+    // Save to session
+    if (sessionKey) {
+      session[sessionKey] = fullContent;
+      // Record time generated
+      const now = new Date();
+      sessionActivity[sessionKey] = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      updateExportSummary();
+    }
+    
+    hideLoading();
+    toast('Generation complete!');
+    
+  } catch (error) {
+    console.error('Stream error:', error);
+    toast('Connection error: ' + error.message);
+    hideLoading();
+  }
+}
+
+/* ── Show output (backward compatibility) ────────────────────────── */
+function showOutput(boxId, contentId, text, sessionKey) {
+  const box = document.getElementById(boxId);
+  const content = document.getElementById(contentId);
+  content.textContent = text;
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (sessionKey) {
+    session[sessionKey] = text;
+    updateExportSummary();
+  }
+}
+
+function updateExportSummary() {
+  const keys = ['topics','questions','outline','writer','methodology','editor'];
+  const labels = {
+    topics:      'Topic suggestions',
+    questions:   'Research questions',
+    outline:     'Dissertation outline',
+    writer:      'Written section',
+    methodology: 'Methodology section',
+    editor:      'Edited text'
+  };
+  const icons = {
+    topics: '◈', questions: '?', outline: '≡',
+    writer: '✎', methodology: '⊙', editor: '✦'
+  };
+
+  const filled = keys.filter(k => session[k]);
+
+  // ── Export summary panel
+  const exportEl = document.getElementById('export-summary');
+  if (exportEl) {
+    if (filled.length === 0) {
+      exportEl.innerHTML = 'No content generated yet in this session.<br>Use the tools on the left, then return here to export.';
+    } else {
+      exportEl.innerHTML = filled.map(k =>
+        '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border2);">' +
+          '<span style="color:#fff">✓</span>' +
+          '<span style="color:var(--text)">' + labels[k] + '</span>' +
+          '<span style="color:var(--muted);margin-left:auto;font-size:12px">' + session[k].split(' ').length + ' words</span>' +
+        '</div>'
+      ).join('');
+    }
+  }
+
+  // ── Dashboard activity panel
+  const dashEl = document.getElementById('dashboard-activity');
+  if (dashEl) {
+    if (filled.length === 0) {
+      dashEl.innerHTML = 'Nothing generated yet. Use a tool above to get started.';
+    } else {
+      dashEl.innerHTML = filled.map(k => {
+        const wordCount = session[k].split(/\s+/).filter(Boolean).length;
+        const time = sessionActivity[k] || '';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border2);">' +
+          '<span style="font-size:14px;width:18px;text-align:center">' + icons[k] + '</span>' +
+          '<span style="color:var(--text);font-size:13.5px">' + labels[k] + '</span>' +
+          '<span style="color:var(--muted);margin-left:auto;font-size:12px;font-family:var(--mono)">' +
+            wordCount + ' words' + (time ? ' · ' + time : '') +
+          '</span>' +
+        '</div>';
+      }).join('');
+    }
+  }
+}
+
+/* ── 1. Topics with streaming ───────────────────────────────────── */
+async function generateTopics() {
+  const field    = document.getElementById('t-field').value;
+  const region   = document.getElementById('t-region').value;
+  const keywords = document.getElementById('t-keywords').value.trim();
+
+  if (!field) {
+    toast('Please select a field of study');
+    return;
+  }
+
+  showLoading('Finding dissertation topics…');
+
+  try {
+    const response = await fetch('/api/topics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ field, region, keywords })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'topics-output', 'topics-content', 'topics');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── 2. Research Questions ───────────────────────────────────────── */
+async function generateQuestions() {
+  const topic = document.getElementById('q-topic').value.trim();
+  if (!topic) { toast('Please enter a topic first'); return; }
+
+  showLoading('Generating research questions…');
+
+  try {
+    const response = await fetch('/api/questions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'questions-output', 'questions-content', 'questions');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── 3. Outline ──────────────────────────────────────────────────── */
+async function generateOutline() {
+  const topic  = document.getElementById('o-topic').value.trim();
+  const degree = document.getElementById('o-degree').value;
+  if (!topic) { toast('Please enter a topic first'); return; }
+
+  showLoading('Building dissertation outline…');
+
+  try {
+    const response = await fetch('/api/outline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, degree })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'outline-output', 'outline-content', 'outline');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── 4. Section Writer ───────────────────────────────────────────── */
+async function generateSection() {
+  const topic        = document.getElementById('w-topic').value.trim();
+  const section      = document.getElementById('w-section').value;
+  const instructions = document.getElementById('w-instructions').value.trim();
+  if (!topic) { toast('Please enter a topic first'); return; }
+
+  document.getElementById('writer-label').textContent = section;
+  showLoading('Writing ' + section + '…');
+
+  try {
+    const response = await fetch('/api/write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, section, instructions })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'writer-output', 'writer-content', 'writer');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── 5. Methodology ──────────────────────────────────────────────── */
+async function generateMethodology() {
+  const topic       = document.getElementById('m-topic').value.trim();
+  const resType     = getSelectedChip('res-type-chips');
+  const collection  = getSelectedChip('data-col-chips');
+  if (!topic) { toast('Please enter a topic first'); return; }
+
+  showLoading('Building methodology section…');
+
+  try {
+    const response = await fetch('/api/methodology', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic,
+        research_type: resType,
+        collection: collection
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'methodology-output', 'methodology-content', 'methodology');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── 6. Academic Editor ──────────────────────────────────────────── */
+async function editText() {
+  const text   = document.getElementById('e-text').value.trim();
+  const action = getSelectedChip('edit-action-chips');
+  if (!text) { toast('Please paste some text first'); return; }
+
+  const actionMap = {
+    'Improve Academic Tone': 'improve',
+    'Shorten Text':          'shorten',
+    'Expand Explanation':    'expand',
+    'Simplify Language':     'simplify'
+  };
+
+  showLoading('Editing your text…');
+
+  try {
+    const response = await fetch('/api/edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        action: actionMap[action] || 'improve'
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    await handleStreamingResponse(response, 'editor-output', 'editor-content', 'editor');
+
+  } catch (error) {
+    hideLoading();
+    toast('Network error: ' + error.message);
+    console.error('Error:', error);
+  }
+}
+
+/* ── Export ──────────────────────────────────────────────────────── */
+async function exportAs(format) {
+  const filled = Object.entries(session).filter(([,v]) => v);
+  if (filled.length === 0) {
+    toast('No content to export yet'); return;
+  }
+
+  const labels = {
+    topics: 'DISSERTATION TOPICS',
+    questions: 'RESEARCH QUESTIONS',
+    outline: 'DISSERTATION OUTLINE',
+    writer: 'WRITTEN SECTION',
+    methodology: 'METHODOLOGY',
+    editor: 'EDITED TEXT'
+  };
+
+  // ── Word export: server-side ──────────────────────────────────────
+  if (format === 'docx') {
+    toast('Building Word document…');
+    try {
+      const response = await fetch('/api/export/docx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sections: session })
+      });
+      if (!response.ok) throw new Error('Export failed');
+      const blob = await response.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 't3n28-dissertation.docx';
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Exported as .docx ✓');
+    } catch (err) {
+      toast('Word export failed: ' + err.message);
+    }
+    return;
+  }
+
+  // ── Text / MD / HTML exports: client-side ─────────────────────────
+  let content = '═══════════════════════════════════════\n';
+  content    += '  t3n28 Dissertation AI — Export\n';
+  content    += '═══════════════════════════════════════\n\n';
+
+  for (const [key, val] of filled) {
+    content += '\n── ' + labels[key] + ' ──────────────────────\n\n';
+    content += val + '\n';
+  }
+
+  let mimeType = 'text/plain';
+  let ext = 'txt';
+
+  if (format === 'md') {
+    ext = 'md';
+    content = content
+      .replace(/═+/g, '---')
+      .replace(/── (.+?) ──+/g, '## $1');
+  } else if (format === 'html') {
+    ext = 'html';
+    const escaped = content.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    content = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<title>t3n28 Dissertation Export</title>' +
+    '<style>body{background:#0a0a0a;color:#e0e0e0;font-family:\'JetBrains Mono\',monospace;padding:40px;max-width:800px;margin:auto;font-size:14px;line-height:1.8;}pre{white-space:pre-wrap;}</style>' +
+    '</head><body><pre>' + escaped + '</pre></body></html>';
+    mimeType = 'text/html';
+  }
+
+  const blob = new Blob([content], { type: mimeType });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 't3n28-dissertation.' + ext;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported as .' + ext);
+}
+
+/* ── Enter key support ───────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  const enterMap = {
+    'q-topic':   generateQuestions,
+    'o-topic':   generateOutline,
+    'w-topic':   generateSection,
+    'm-topic':   generateMethodology,
+    't-keywords': generateTopics,
+  };
+  for (const [id, fn] of Object.entries(enterMap)) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', function(e) { if (e.key === 'Enter') fn(); });
+  }
+});
+
+// Optional: Load model info on startup
+window.addEventListener('load', async function() {
+  try {
+    const response = await fetch('/models');
+    const data = await response.json();
+    console.log(`📚 ${data.total_working} working models available`);
+  } catch (e) {
+    console.log('Could not load model info');
+  }
+});
+</script>
+
+</body>
+</html>
